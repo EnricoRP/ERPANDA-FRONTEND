@@ -24,3 +24,25 @@ export async function signUp(data: {
 
   return { success: true };
 }
+
+export async function signIn(data: { email: string; password: string }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: data.email,
+      password: data.password,
+    }),
+  });
+
+  if (!res.ok) {
+    return {
+      success: false,
+      error: `Server error: ${res.statusText}`,
+    };
+  }
+
+  return { success: true };
+}

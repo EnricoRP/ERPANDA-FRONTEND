@@ -64,7 +64,7 @@ const AuthForm = <T extends FieldValues>({
       </h1>
       <p className="text-dark-200">
         {isSignIn
-          ? "Masuk untuk mengakses semua modul dan fitur ERPANDA Anda."
+          ? "Silahkan masuk untuk mengakses semua modul dan mulai mengelola bisnis Anda."
           : "Lengkapi formulir berikut untuk membuat akun dan mulai mengelola bisnis Anda."}
       </p>
       <Form {...form}>
