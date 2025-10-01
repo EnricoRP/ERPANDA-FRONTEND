@@ -48,6 +48,18 @@ const Page = () => {
     setCanResend(false);
   };
 
+  const handleChange = (value: string) => {
+    // Update state hanya sampai 6 digit
+    if (value.length <= 6) {
+      setOtp(value);
+
+      // Auto-submit ketika OTP penuh
+      if (value.length === 6) {
+        handleSubmit(value);
+      }
+    }
+  };
+
   return (
     <form
       onSubmit={(e) => {
@@ -65,7 +77,7 @@ const Page = () => {
         </p>
 
         <div className="flex justify-center">
-          <InputOTP value={otp} onChange={(val) => setOtp(val)} maxLength={6}>
+          <InputOTP maxLength={6} value={otp} onChange={handleChange}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
               <InputOTPSlot index={1} />
