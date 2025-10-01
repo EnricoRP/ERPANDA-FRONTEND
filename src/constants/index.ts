@@ -49,3 +49,26 @@ export const userRoles = [
     textColor: "text-[#027A48]",
   },
 ];
+
+export const adminSideBarLinks = [
+  {
+    img: "/icons/admin/home.svg",
+    route: "/",
+    text: "Home",
+  },
+  {
+    img: "/icons/admin/users.svg",
+    route: "//users",
+    text: "All Users",
+  },
+  {
+    img: "/icons/admin/book.svg",
+    route: "/books",
+    text: "All Books",
+  },
+  {
+    img: "/icons/admin/user.svg",
+    route: "/account-requests",
+    text: "Account Requests",
+  },
+];
