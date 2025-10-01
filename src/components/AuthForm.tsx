@@ -50,7 +50,7 @@ const AuthForm = <T extends FieldValues>({
   const isSignIn = type === FormType.SIGN_IN;
   const isSignUp = type === FormType.SIGN_UP;
   const isTenantInfo = type === FormType.TENANT_INFO;
-
+  console.log("type:", type);
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema as any),
     defaultValues: defaultValues as DefaultValues<T>,
