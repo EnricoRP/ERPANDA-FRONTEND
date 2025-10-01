@@ -14,6 +14,7 @@
   --color-popover-foreground: var(--popover-foreground);
 
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
@@ -90,50 +91,6 @@
   --background-image-pattern: url("/images/pattern.webp");
 }
 
-@utility gradient-vertical {
-  background: linear-gradient(
-    180deg,
-    var(--gradient-background-dark) 0%,
-    var(--gradient-background-medium) 100%
-  );
-}
-
-@utility gradient-gray {
-  background: linear-gradient(
-    270deg,
-    var(--gradient-gray-start) 0%,
-    var(--gradient-gray-end) 100%
-  );
-}
-
-@utility gradient-blue {
-  background: linear-gradient(
-    180deg,
-    var(--gradient-blue-start) 0%,
-    var(--gradient-background-dark) 100%
-  );
-}
-
-@utility auth-container {
-  @apply relative min-h-screen;
-}
-
-@utility auth-form {
-  @apply relative z-10 flex min-h-screen items-center justify-center px-5;
-}
-
-@utility auth-box {
-  @apply bg-light-800/50 mx-auto flex items-center justify-center max-w-xl flex-col gap-6 rounded-lg p-10;
-}
-
-@utility form-btn {
-  @apply bg-primary !text-secondary hover:!bg-primary inline-flex min-h-14 w-full items-center justify-center rounded-md px-6 py-2 font-bold text-base;
-}
-
-@utility form-input {
-  @apply w-full min-h-14 border-none text-base font-bold placeholder:font-normal !text-white placeholder:!text-dark-100 focus-visible:ring-0 focus-visible:shadow-none !bg-dark-300;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -186,6 +143,7 @@
 
   /* Primary */
   --primary: #25388c; /* warna utama */
+  --primary-hover: #3b4fae; /* versi lebih terang dari #25388c */
   --primary-foreground: #ffffff; /* teks di atas primary */
 
   /* Secondary / Accent */
@@ -264,4 +222,48 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+@utility gradient-vertical {
+  background: linear-gradient(
+    180deg,
+    var(--gradient-background-dark) 0%,
+    var(--gradient-background-medium) 100%
+  );
+}
+
+@utility gradient-gray {
+  background: linear-gradient(
+    270deg,
+    var(--gradient-gray-start) 0%,
+    var(--gradient-gray-end) 100%
+  );
+}
+
+@utility gradient-blue {
+  background: linear-gradient(
+    180deg,
+    var(--gradient-blue-start) 0%,
+    var(--gradient-background-dark) 100%
+  );
+}
+
+@utility auth-container {
+  @apply relative min-h-screen;
+}
+
+@utility auth-form {
+  @apply relative z-10 flex min-h-screen items-center justify-center px-5;
+}
+
+@utility auth-box {
+  @apply bg-light-800/50 mx-auto flex items-center justify-center max-w-xl flex-col gap-6 rounded-lg p-10;
+}
+
+@utility form-btn {
+  @apply bg-primary !text-secondary hover:!bg-primary-hover inline-flex min-h-14 w-full items-center justify-center rounded-md px-6 py-2 font-bold text-base;
+}
+
+@utility form-input {
+  @apply w-full min-h-14 border-none text-base font-bold placeholder:font-normal !text-white placeholder:!text-dark-100 focus-visible:ring-0 focus-visible:shadow-none !bg-dark-300;
 }
