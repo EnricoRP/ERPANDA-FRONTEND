@@ -7,7 +7,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
   return (
     <main className="flex min-h-screen w-full flex-row">
       <Sidebar />
-      <div className="flex w-[calc(100%-264px)] flex-1 flex-col bg-light-300 p-5 xs:p-10">
+      <div className="flex w-[calc(100%-264px)] flex-1 flex-col bg-light-300 p-5 max-md:p-2">
         <Header />
         {children}
       </div>
