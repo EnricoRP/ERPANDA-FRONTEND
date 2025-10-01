@@ -268,9 +268,9 @@
 }
 
 @utility form-btn {
-  @apply bg-primary text-secondary hover:bg-primary-hover cursor-pointer inline-flex min-h-14 w-full items-center justify-center rounded-md px-4 py-2 font-bold text-base;
+  @apply min-h-14 w-full bg-primary font-bold text-base text-secondary cursor-pointer inline-flex items-center justify-center rounded-md px-4 py-2 hover:bg-primary-hover;
 }
 
 @utility form-input {
-  @apply w-full min-h-14 text-base font-semibold !text-input-text placeholder:font-normal placeholder:!text-input-placeholder !border-none focus-visible:!ring-0 focus-visible:!shadow-none !bg-foreground;
+  @apply min-h-14 !text-base !font-semibold !text-input-text placeholder:!font-normal placeholder:!text-input-placeholder !border-none !bg-foreground;
 }
