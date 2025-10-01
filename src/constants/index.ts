@@ -10,6 +10,20 @@ export const FIELD_TYPES = {
   password: "password",
 };
 
+export const FIELD_PLACEHOLDERS = {
+  usernameOrEmail: "Masukkan email atau username",
+  username: "Masukkan username",
+  email: "Masukkan email",
+  password: "Masukkan password",
+  companyName: "Nama perusahaan Anda",
+  industry: "Jenis industri / bidang usaha",
+  address: "Alamat lengkap perusahaan",
+  city: "Kota",
+  phone: "Nomor telepon",
+  fax: "Nomor fax",
+  logoUrl: "Unggah logo perusahaan",
+};
+
 export const sorts = [
   {
     value: "oldest",

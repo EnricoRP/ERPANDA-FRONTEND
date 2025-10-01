@@ -1,6 +1,6 @@
 "use client";
 
-import AuthForm from "@/components/AuthForm";
+import AuthForm, { FormType } from "@/components/AuthForm";
 import { signUp } from "@/lib/actions/auth";
 import { signUpSchema } from "@/lib/validations";
 import React from "react";
@@ -8,7 +8,7 @@ import React from "react";
 const page = () => {
   return (
     <AuthForm
-      type="SIGN_UP"
+      type={FormType.SIGN_UP}
       schema={signUpSchema}
       defaultValues={{
         username: "",
