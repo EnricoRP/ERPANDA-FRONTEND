@@ -118,6 +118,7 @@ const AuthForm = <T extends FieldValues>({
                           ]
                         }
                         {...field}
+                        className="form-input"
                       />
                     )}
                   </FormControl>
@@ -137,10 +138,7 @@ const AuthForm = <T extends FieldValues>({
       {(type === FormType.SIGN_IN || type === FormType.SIGN_UP) && (
         <p className="text-center text-base font-medium">
           {isSignIn ? "Belum punya akun? " : "Sudah punya akun? "}
-          <Link
-            href={isSignIn ? "/sign-up" : "/sign-in"}
-            className="font-bold text-primary"
-          >
+          <Link href={isSignIn ? "/sign-up" : "/sign-in"} className="link">
             {isSignIn ? "Daftar Sekarang" : "Masuk"}
           </Link>
         </p>
