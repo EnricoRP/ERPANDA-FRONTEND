@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white px-5 pb-5 pt-10">
+    <div className="sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white px-5 max-md:px-2 pb-5 pt-10 max-md:pt-5">
       <div>
         <div className="flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2 max-md:justify-center">
           <Image
@@ -19,11 +19,11 @@ const Sidebar = () => {
             alt="logo"
             height={100}
             width={100}
-            className="max-w-full h-auto max-md:max-w-16"
+            className="max-w-full h-auto max-md:max-w-12"
           />
         </div>
 
-        <div className="mt-6 flex flex-col gap-5">
+        <div className="mt-6 flex flex-col max-md:gap-1">
           {adminSideBarLinks.map((link) => {
             const isSelected =
               (link.route !== "/admin" &&
