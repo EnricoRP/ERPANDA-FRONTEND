@@ -5,78 +5,205 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Menu } from "lucide-react"; // Ikon untuk membuka sidebar di mobile
 
-const Sidebar = () => {
+// Komponen Sidebar Navigasi - Berisi logika untuk link dan tampilan
+const SidebarNavLinks = ({ isCollapsed = false }) => {
   const pathname = usePathname();
+
   return (
-    <div className="sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white px-5 max-md:px-2 pb-5 pt-10 max-md:pt-5">
-      <div>
-        <div className="flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2 max-md:justify-center">
-          <Image
-            src="/logo.svg"
-            alt="logo"
-            height={100}
-            width={100}
-            className="max-w-full h-auto max-md:max-w-12"
-          />
-        </div>
+    <div className="mt-6 flex flex-col max-md:gap-1">
+      {adminSideBarLinks.map((link) => {
+        const isSelected =
+          (link.route !== "/admin" &&
+            pathname.includes(link.route) &&
+            link.route.length > 1) ||
+          pathname === link.route;
 
-        <div className="mt-6 flex flex-col max-md:gap-1">
-          {adminSideBarLinks.map((link) => {
-            const isSelected =
-              (link.route !== "/admin" &&
-                pathname.includes(link.route) &&
-                link.route.length > 1) ||
-              pathname === link.route;
+        return (
+          <Link href={link.route} key={link.route}>
+            <div
+              className={cn(
+                "flex flex-row items-center w-full gap-2 rounded-lg py-3.5",
+                isCollapsed ? "justify-center px-0" : "px-5", // Penyesuaian padding berdasarkan isCollapsed
+                isSelected && "bg-primary shadow-sm"
+              )}
+            >
+              {/* Ikon */}
+              <div
+                className={cn(
+                  "relative size-5",
+                  isCollapsed ? "mx-auto" : "ml-0"
+                )}
+              >
+                <Image
+                  src={link.img}
+                  alt="icon"
+                  fill
+                  className={`${
+                    isSelected ? "brightness-0 invert" : ""
+                  } object-contain`}
+                />
+              </div>
 
-            return (
-              <Link href={link.route} key={link.route}>
-                <div
+              {/* Teks - Sembunyikan jika sidebar ciut */}
+              {!isCollapsed && (
+                <p
                   className={cn(
-                    "flex flex-row items-center w-full gap-2 rounded-lg px-5 py-3.5 max-md:justify-center",
-                    isSelected && "bg-primary shadow-sm"
+                    "text-base font-medium",
+                    isSelected ? "text-white" : "text-dark"
                   )}
                 >
-                  <div className="relative size-5">
+                  {link.text}
+                </p>
+              )}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
+
+const Sidebar = () => {
+  // Status untuk mengelola apakah sidebar sedang dalam mode ciut (collapsed)
+  // Default: false (terbuka)
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Fungsi untuk membalikkan status ciut
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+
+  return (
+    // Struktur utama Sidebar, lebarnya diatur berdasarkan state isCollapsed
+    <>
+      <aside
+        className={cn(
+          "sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white pb-5 pt-10 transition-all duration-300",
+          isCollapsed ? "w-[70px] px-2" : "w-[250px] px-5", // Ganti w-auto dengan lebar tetap
+          "max-lg:hidden" // Sembunyikan sepenuhnya di layar kecil (mobile)
+        )}
+      >
+        {/* Tombol Toggle Collapse (Hanya di desktop) */}
+        <button
+          onClick={toggleCollapse}
+          className="absolute top-2 right-[-10px] size-5 rounded-full bg-primary text-white flex items-center justify-center shadow-md z-10"
+          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+        >
+          <Menu
+            className={cn(
+              "size-3.5 transition-transform",
+              isCollapsed ? "rotate-180" : "rotate-0"
+            )}
+          />
+        </button>
+
+        <div>
+          {/* Logo Section */}
+          <div
+            className={cn(
+              "flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2",
+              isCollapsed ? "justify-center" : "justify-start"
+            )}
+          >
+            <Image
+              src={
+                isCollapsed
+                  ? "/logo-sidebar-close.svg"
+                  : "/logo-sidebar-open.svg"
+              }
+              alt="logo"
+              height={isCollapsed ? 50 : 160}
+              width={isCollapsed ? 50 : 160}
+              className={cn(
+                isCollapsed ? "max-w-10 h-auto" : "max-w-full h-auto"
+              )}
+            />
+          </div>
+
+          {/* Navigation Links */}
+          <SidebarNavLinks isCollapsed={isCollapsed} />
+        </div>
+
+        {/* User Info Section */}
+        <div
+          className={cn(
+            "my-8 flex w-full flex-row gap-2 rounded-full border border-light-400 px-2 py-2 shadow-sm",
+            isCollapsed ? "justify-center" : "px-6" // Penyesuaian padding
+          )}
+        >
+          <Avatar>
+            <AvatarFallback className="flex h-full w-full items-center justify-center rounded-full bg-amber-100">
+              {"EN"}
+            </AvatarFallback>
+          </Avatar>
+
+          {/* Detail Pengguna - Sembunyikan jika sidebar ciut */}
+          {!isCollapsed && (
+            <div className="flex flex-col">
+              <p className="font-semibold text-dark-200">{"Enrico Riski"}</p>
+              <p className="text-xs text-light-500">
+                {"EnricoRiskiP@Gmail.Com"}
+              </p>
+            </div>
+          )}
+        </div>
+      </aside>
+      {/* --- Mobile Sidebar/Drawer --- */}
+      {/* Gunakan Drawer sebagai pengganti */}
+      {/* sidebar tetap di layar kecil */}
+      <>
+        <div className="fixed top-0 left-0 p-4 lg:hidden z-20">
+          <Drawer direction="left">
+            {/* Trigger Drawer (misalnya, Hamburger Menu) */}
+            <DrawerTrigger asChild>
+              <button className="p-2 border rounded-md bg-white">
+                <Menu className="size-6" />
+              </button>
+            </DrawerTrigger>
+            {/* Konten Drawer (Sidebar Terbuka) */}
+            <DrawerContent className="w-[80vw] h-full rounded-r-none border-r-0 fixed top-0 left-0">
+              {/* Menggunakan konten sidebar terbuka */}
+              <div className="flex h-full flex-col justify-between bg-white px-5 pb-5 pt-10">
+                <div>
+                  {/* Logo Mobile */}
+                  <div className="flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2">
                     <Image
-                      src={link.img}
-                      alt="icon"
-                      fill
-                      className={`${
-                        isSelected ? "brightness-0 invert" : ""
-                      }  object-contain`}
+                      src="/logo-sidebar-open.svg"
+                      alt="logo"
+                      height={160}
+                      width={160}
+                      className="max-w-full h-auto "
                     />
                   </div>
-
-                  <p
-                    className={`text-base font-medium max-md:hidden ${cn(
-                      isSelected ? "text-white" : "text-dark"
-                    )}`}
-                  >
-                    {link.text}
-                  </p>
+                  {/* Navigasi Mobile */}
+                  <SidebarNavLinks isCollapsed={false} />
                 </div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+                {/* User Info Mobile */}
+                <div className="my-8 flex w-full flex-row gap-2 rounded-full border border-light-400 px-6 py-2 shadow-sm">
+                  <Avatar>
+                    <AvatarFallback className="flex h-full w-full items-center justify-center rounded-full bg-amber-100">
+                      {"EN"}
+                    </AvatarFallback>
+                  </Avatar>
 
-      <div className="my-8 flex w-full flex-row gap-2 rounded-full border border-light-400 px-6 py-2 shadow-sm max-md:px-2">
-        <Avatar>
-          <AvatarFallback className="flex h-full w-full items-center justify-center rounded-full bg-amber-100">
-            {"EN"}
-          </AvatarFallback>
-        </Avatar>
-
-        <div className="flex flex-col max-md:hidden">
-          <p className="font-semibold text-dark-200">{"Enrico Riski"}</p>
-          <p className="text-xs text-light-500">{"EnricoRiskiP@Gmail.Com"}</p>
+                  <div className="flex flex-col">
+                    <p className="font-semibold text-dark-200">
+                      {"Enrico Riski"}
+                    </p>
+                    <p className="text-xs text-light-500">
+                      {"EnricoRiskiP@Gmail.Com"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
-      </div>
-    </div>
+      </>
+    </>
   );
 };
 
