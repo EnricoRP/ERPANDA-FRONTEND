@@ -58,17 +58,23 @@ export const adminSideBarLinks = [
   },
   {
     img: "/icons/admin/users.svg",
-    route: "//users",
+    route: "/user",
     text: "All Users",
   },
   {
     img: "/icons/admin/book.svg",
-    route: "/books",
-    text: "All Books",
+    route: "/master",
+    text: "Master",
+    children: [
+      { text: "Inventory", route: "/master/inventory" },
+      { text: "Jenis", route: "/master/type" },
+      { text: "Kategori", route: "/master/category" },
+      { text: "Gudang", route: "/master/warehouse" },
+    ],
   },
   {
     img: "/icons/admin/user.svg",
-    route: "/account-requests",
+    route: "/transaction",
     text: "Account Requests",
   },
 ];

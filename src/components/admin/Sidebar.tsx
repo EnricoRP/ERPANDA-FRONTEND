@@ -9,6 +9,15 @@ import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { ChevronLeft, ChevronRight, Menu } from "lucide-react"; // Ikon untuk membuka sidebar di mobile
+import { getBreadcrumbs } from "@/lib/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 // Komponen Sidebar Navigasi - Berisi logika untuk link dan tampilan
 const SidebarNavLinks = ({ isCollapsed = false }) => {
@@ -17,6 +26,7 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
   return (
     <div className="mt-6 flex flex-col max-md:gap-1">
       {adminSideBarLinks.map((link) => {
+        const [isOpen, setIsOpen] = useState(false);
         const isSelected =
           (link.route !== "/admin" &&
             pathname.includes(link.route) &&
@@ -25,19 +35,17 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
 
         return (
           <Link href={link.route} key={link.route}>
+            {/* Parent Menu */}
             <div
               className={cn(
-                "flex flex-row items-center w-full gap-2 rounded-lg py-3.5",
-                isCollapsed ? "justify-center px-0" : "px-5", // Penyesuaian padding berdasarkan isCollapsed
+                "flex flex-row items-center w-full gap-2 rounded-lg py-3.5 cursor-pointer",
+                isCollapsed ? "justify-center px-0" : "px-5",
                 isSelected && "bg-primary shadow-sm"
               )}
+              onClick={() => setIsOpen(!isOpen)}
             >
-              {/* Ikon */}
               <div
-                className={cn(
-                  "relative size-5",
-                  isCollapsed ? "mx-auto" : "ml-0"
-                )}
+                className={cn("relative size-5", isCollapsed ? "mx-auto" : "")}
               >
                 <Image
                   src={link.img}
@@ -48,7 +56,6 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
                   } object-contain`}
                 />
               </div>
-
               {/* Teks - Sembunyikan jika sidebar ciut */}
               {!isCollapsed && (
                 <p
@@ -60,7 +67,36 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
                   {link.text}
                 </p>
               )}
+              {!isCollapsed && link.children && (
+                <span
+                  className={`ml-auto transition-transform ${
+                    isOpen ? "rotate-90" : ""
+                  }`}
+                >
+                  ▶
+                </span>
+              )}
             </div>
+
+            {/* Sub-menu */}
+            {link.children && isOpen && !isCollapsed && (
+              <div className="flex flex-col pl-8 mt-1">
+                {link.children.map((sub) => (
+                  <Link href={sub.route} key={sub.route}>
+                    <div
+                      className={cn(
+                        "py-2 rounded-lg cursor-pointer",
+                        pathname === sub.route
+                          ? "bg-primary text-white"
+                          : "text-dark hover:bg-gray-100"
+                      )}
+                    >
+                      {sub.text}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </Link>
         );
       })}
@@ -71,6 +107,8 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
 const Sidebar = () => {
   // Status untuk mengelola apakah sidebar sedang dalam mode ciut (collapsed)
   // Default: true (tertutup)
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -165,15 +203,39 @@ const Sidebar = () => {
       {/* Gunakan Drawer sebagai pengganti */}
       {/* sidebar tetap di layar kecil */}
       <>
-        <div className="fixed top-0 left-0 w-full flex flex-row border-b bg-light-300 lg:hidden z-20">
+        <div className="fixed top-0 left-0 w-full flex flex-row border-b border-primary bg-light-300 lg:hidden z-20">
           <Drawer direction="top">
-            <div className="w-full p-2">
+            <div className="w-full p-2 flex items-center gap-6">
               <DrawerTrigger asChild>
                 <button className="p-1 md:w-auto">
-                  <Menu className="w-6 h-6 mr-2" />
+                  <Menu className="w-4 h-4" />
                 </button>
               </DrawerTrigger>
+
+              <Breadcrumb className="flex-1">
+                <BreadcrumbList>
+                  {breadcrumbs.map((b, index) => {
+                    const isLast = index === breadcrumbs.length - 1;
+                    return (
+                      <React.Fragment key={b.href}>
+                        <BreadcrumbItem>
+                          {isLast ? (
+                            <BreadcrumbPage>{b.text}</BreadcrumbPage>
+                          ) : (
+                            <BreadcrumbLink asChild>
+                              <Link href={b.href}>{b.text}</Link>
+                            </BreadcrumbLink>
+                          )}
+                        </BreadcrumbItem>
+
+                        {!isLast && <BreadcrumbSeparator />}
+                      </React.Fragment>
+                    );
+                  })}
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
+
             {/* Konten Drawer (Sidebar Terbuka) */}
             <DrawerContent className="w-full h-full rounded-r-none border-r-0 fixed top-0 left-0">
               {/* Menggunakan konten sidebar terbuka */}
