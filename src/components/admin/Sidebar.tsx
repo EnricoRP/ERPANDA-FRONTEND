@@ -203,7 +203,7 @@ const Sidebar = () => {
       {/* Gunakan Drawer sebagai pengganti */}
       {/* sidebar tetap di layar kecil */}
       <>
-        <div className="fixed top-0 left-0 w-full flex flex-row border-b border-primary bg-light-300 lg:hidden z-20">
+        <div className="fixed top-[45px] left-0 w-full flex flex-row border-b border-primary bg-light-300 lg:hidden z-20">
           <Drawer direction="top">
             <div className="w-full p-2 flex items-center gap-6">
               <DrawerTrigger asChild>
@@ -220,7 +220,9 @@ const Sidebar = () => {
                       <React.Fragment key={b.href}>
                         <BreadcrumbItem>
                           {isLast ? (
-                            <BreadcrumbPage>{b.text}</BreadcrumbPage>
+                            <BreadcrumbPage className="text-primary">
+                              {b.text}
+                            </BreadcrumbPage>
                           ) : (
                             <BreadcrumbLink asChild>
                               <Link href={b.href}>{b.text}</Link>
