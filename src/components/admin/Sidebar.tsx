@@ -70,8 +70,9 @@ const SidebarNavLinks = ({ isCollapsed = false }) => {
 
 const Sidebar = () => {
   // Status untuk mengelola apakah sidebar sedang dalam mode ciut (collapsed)
-  // Default: false (terbuka)
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Default: true (tertutup)
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Fungsi untuk membalikkan status ciut
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -80,9 +81,11 @@ const Sidebar = () => {
     // Struktur utama Sidebar, lebarnya diatur berdasarkan state isCollapsed
     <>
       <aside
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          "sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white pb-5 pt-10 transition-all duration-300",
-          isCollapsed ? "w-[70px] px-2" : "w-[250px] px-5", // Ganti w-auto dengan lebar tetap
+          "sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white pb-5 pt-5 transition-all duration-300",
+          isCollapsed && !isHovered ? "w-[70px] px-2" : "w-[250px] px-5", // Ganti w-auto dengan lebar tetap
           "max-lg:hidden" // Sembunyikan sepenuhnya di layar kecil (mobile)
         )}
       >
@@ -91,20 +94,22 @@ const Sidebar = () => {
           <div
             className={cn(
               "flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2",
-              isCollapsed ? "justify-center" : "justify-start"
+              isCollapsed && !isHovered ? "justify-center" : "justify-start"
             )}
           >
             <Image
               src={
-                isCollapsed
+                isCollapsed && !isHovered
                   ? "/logo-sidebar-close.svg"
                   : "/logo-sidebar-open.svg"
               }
               alt="logo"
-              height={isCollapsed ? 50 : 160}
-              width={isCollapsed ? 50 : 160}
+              height={isCollapsed && !isHovered ? 50 : 160}
+              width={isCollapsed && !isHovered ? 50 : 160}
               className={cn(
-                isCollapsed ? "max-w-12 h-auto" : "max-w-full h-auto"
+                isCollapsed && !isHovered
+                  ? "max-w-12 h-auto"
+                  : "max-w-full h-auto"
               )}
             />
             {/* Tombol Toggle (hanya muncul kalau sidebar expanded) */}
@@ -122,7 +127,7 @@ const Sidebar = () => {
             {isCollapsed && (
               <button
                 onClick={toggleCollapse}
-                className="absolute top-11 right-[-10px] rounded-full bg-primary text-white p-1 shadow-md"
+                className="absolute top-12 right-[-10px] rounded-full bg-primary text-white p-1 shadow-md"
                 title="Expand Sidebar"
               >
                 <ChevronRight className="size-3.5" />
@@ -131,14 +136,14 @@ const Sidebar = () => {
           </div>
 
           {/* Navigation Links */}
-          <SidebarNavLinks isCollapsed={isCollapsed} />
+          <SidebarNavLinks isCollapsed={isCollapsed && !isHovered} />
         </div>
 
         {/* User Info Section */}
         <div
           className={cn(
             "my-8 flex w-full flex-row gap-2 rounded-full border border-light-400 px-2 py-2 shadow-sm",
-            isCollapsed ? "justify-center" : "px-6" // Penyesuaian padding
+            isCollapsed && !isHovered ? "justify-center" : "px-6" // Penyesuaian padding
           )}
         >
           <Avatar>
@@ -148,12 +153,10 @@ const Sidebar = () => {
           </Avatar>
 
           {/* Detail Pengguna - Sembunyikan jika sidebar ciut */}
-          {!isCollapsed && (
+          {(!isCollapsed || isHovered) && (
             <div className="flex flex-col">
-              <p className="font-semibold text-dark-200">{"Enrico Riski"}</p>
-              <p className="text-xs text-light-500">
-                {"EnricoRiskiP@Gmail.Com"}
-              </p>
+              <p className="font-semibold text-dark-200">Enrico Riski</p>
+              <p className="text-xs text-light-500">EnricoRiskiP@Gmail.Com</p>
             </div>
           )}
         </div>
