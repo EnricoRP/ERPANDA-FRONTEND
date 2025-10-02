@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import { Menu } from "lucide-react"; // Ikon untuk membuka sidebar di mobile
+import { ChevronLeft, ChevronRight, Menu } from "lucide-react"; // Ikon untuk membuka sidebar di mobile
 
 // Komponen Sidebar Navigasi - Berisi logika untuk link dan tampilan
 const SidebarNavLinks = ({ isCollapsed = false }) => {
@@ -87,21 +87,7 @@ const Sidebar = () => {
         )}
       >
         {/* Tombol Toggle Collapse (Hanya di desktop) */}
-        <button
-          onClick={toggleCollapse}
-          className="absolute top-2 right-[-10px] size-5 rounded-full bg-primary text-white flex items-center justify-center shadow-md z-10"
-          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        >
-          <Menu
-            className={cn(
-              "size-3.5 transition-transform",
-              isCollapsed ? "rotate-180" : "rotate-0"
-            )}
-          />
-        </button>
-
         <div>
-          {/* Logo Section */}
           <div
             className={cn(
               "flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2",
@@ -118,9 +104,30 @@ const Sidebar = () => {
               height={isCollapsed ? 50 : 160}
               width={isCollapsed ? 50 : 160}
               className={cn(
-                isCollapsed ? "max-w-10 h-auto" : "max-w-full h-auto"
+                isCollapsed ? "max-w-12 h-auto" : "max-w-full h-auto"
               )}
             />
+            {/* Tombol Toggle (hanya muncul kalau sidebar expanded) */}
+            {!isCollapsed && (
+              <button
+                onClick={toggleCollapse}
+                className="rounded-md p-2 hover:bg-primary/10"
+                title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              >
+                <ChevronLeft />
+              </button>
+            )}
+
+            {/* Kalau sidebar collapsed → tampilkan tombol kecil di bawah logo */}
+            {isCollapsed && (
+              <button
+                onClick={toggleCollapse}
+                className="absolute top-11 right-[-10px] rounded-full bg-primary text-white p-1 shadow-md"
+                title="Expand Sidebar"
+              >
+                <ChevronRight className="size-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Navigation Links */}
