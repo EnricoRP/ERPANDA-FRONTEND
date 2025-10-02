@@ -165,30 +165,20 @@ const Sidebar = () => {
       {/* Gunakan Drawer sebagai pengganti */}
       {/* sidebar tetap di layar kecil */}
       <>
-        <div className="fixed top-0 left-0 p-4 lg:hidden z-20">
-          <Drawer direction="left">
-            {/* Trigger Drawer (misalnya, Hamburger Menu) */}
-            <DrawerTrigger asChild>
-              <button className="p-2 border rounded-md bg-white">
-                <Menu className="size-6" />
-              </button>
-            </DrawerTrigger>
+        <div className="fixed top-0 left-0 w-full flex flex-row border-b bg-light-300 lg:hidden z-20">
+          <Drawer direction="top">
+            <div className="w-full p-2">
+              <DrawerTrigger asChild>
+                <button className="p-1 md:w-auto">
+                  <Menu className="w-6 h-6 mr-2" />
+                </button>
+              </DrawerTrigger>
+            </div>
             {/* Konten Drawer (Sidebar Terbuka) */}
-            <DrawerContent className="w-[80vw] h-full rounded-r-none border-r-0 fixed top-0 left-0">
+            <DrawerContent className="w-full h-full rounded-r-none border-r-0 fixed top-0 left-0">
               {/* Menggunakan konten sidebar terbuka */}
               <div className="flex h-full flex-col justify-between bg-white px-5 pb-5 pt-10">
                 <div>
-                  {/* Logo Mobile */}
-                  <div className="flex flex-row items-center gap-2 border-b border-dashed border-primary/40 pb-2">
-                    <Image
-                      src="/logo-sidebar-open.svg"
-                      alt="logo"
-                      height={160}
-                      width={160}
-                      className="max-w-full h-auto "
-                    />
-                  </div>
-                  {/* Navigasi Mobile */}
                   <SidebarNavLinks isCollapsed={false} />
                 </div>
                 {/* User Info Mobile */}
