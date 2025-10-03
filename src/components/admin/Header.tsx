@@ -1,9 +1,25 @@
+"use client";
+
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
-
+import { usePathname } from "next/navigation";
+import { getBreadcrumbs } from "@/lib/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import React from "react";
 const Header = () => {
+  const pathname = usePathname();
+  // Catatan: Asumsi getBreadcrumbs(pathname) mengembalikan array of { href, text }
+  const breadcrumbs = getBreadcrumbs(pathname);
   return (
     <header
       className={cn(
@@ -36,6 +52,32 @@ const Header = () => {
           <p className="text-base text-slate-500">
             Monitor all of your users and books here
           </p>
+          {/* Breadcrumbs */}
+          <Breadcrumb className="flex-1 overflow-hidden">
+            <BreadcrumbList className="flex flex-nowrap overflow-x-auto whitespace-nowrap">
+              {breadcrumbs.map((b, index) => {
+                const isLast = index === breadcrumbs.length - 1;
+                return (
+                  <React.Fragment key={b.href}>
+                    <BreadcrumbItem className="flex items-center">
+                      {isLast ? (
+                        <BreadcrumbPage className="text-primary text-sm font-semibold">
+                          {b.text}
+                        </BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink asChild>
+                          <Link href={b.href} className="text-sm">
+                            {b.text}
+                          </Link>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                    {!isLast && <BreadcrumbSeparator />}
+                  </React.Fragment>
+                );
+              })}
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
 
         {/* Kanan */}
