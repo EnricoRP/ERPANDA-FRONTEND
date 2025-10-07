@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
-import { Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { getBreadcrumbs } from "@/lib/breadcrumb";
 import {
@@ -15,11 +14,17 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
+import Search, { SearchHandle } from "./SearchPopup";
+import { Search as SearchIcon } from "lucide-react";
+
 const Header = () => {
   const pathname = usePathname();
   // Catatan: Asumsi getBreadcrumbs(pathname) mengembalikan array of { href, text }
   const breadcrumbs = getBreadcrumbs(pathname);
+
+  const searchRef = useRef<SearchHandle>(null);
+
   return (
     <header
       className={cn(
@@ -39,8 +44,11 @@ const Header = () => {
         />
 
         {/* Icon Search */}
-        <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-md">
-          <Search className="w-3 h-3" />
+        <button
+          className="p-2 text-gray-600 hover:bg-gray-100 rounded-md"
+          onClick={() => searchRef.current?.openPopup()}
+        >
+          <SearchIcon className="w-3 h-3" />
         </button>
       </div>
 
@@ -83,13 +91,17 @@ const Header = () => {
         {/* Kanan */}
         <div className="relative w-1/3">
           <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <Search className="w-4 h-4" />
+            <SearchIcon className="w-4 h-4" />
           </span>
           <Input
             type="text"
             placeholder="Search users, books by title, author, or genre."
-            className="pl-10 w-full" // pl-10 supaya text tidak menimpa icon
+            className="pl-10 w-full"
+            onFocus={() => searchRef.current?.openPopup()} // buka popup saat fokus
           />
+
+          {/* Komponen Search self-contained */}
+          <Search ref={searchRef} />
         </div>
       </div>
     </header>
